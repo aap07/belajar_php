@@ -1,62 +1,76 @@
 <?php
-//koneksi db
+// Mengimpor file functions.php yang berisi definisi fungsi dan koneksi database
 require 'functions.php';
+// Memulai sesi untuk penggunaan variabel global $_SESSION
 session_start();
-//cek cookie
+
+// Pengecekan apakah cookie sudah ter-set sebelumnya
 if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
+	// Mengambil nilai cookie yang tersimpan
 	$id = $_COOKIE['id'];
 	$key = $_COOKIE['key'];
-	//ambil username
+	// Query ke database untuk mengambil username dengan id yang didapat dari cookie
 	$result = mysqli_query($conn, "SELECT username FROM user WHERE id ='$id'");
 	$row = mysqli_fetch_assoc($result);
-	//cek cookie dan username
+	// Mengecek apakah hash dari username sama dengan nilai key pada cookie
 	if ($key === hash('sha256', $row['username'])) {
+		// Jika sama, maka user dianggap sudah login dan session di-set
 		$_SESSION['login'] = true;
 	}
 	// if ($_COOKIE['login'] == 'true') {
 	// 	$_SESSION['login'] == true;
 	//}
 }
-//cek session
-if ( isset($_SESSION["login"])) {
+
+// Cek apakah user sudah login, jika sudah redirect ke halaman index
+if (isset($_SESSION["login"])) {
 	header("Location: index.php");
 	exit;
 }
-//tombol cari d'klik
+
+// Jika tombol login ditekan, maka:
 if (isset($_POST["login"])) {
+	// Mengambil data username dan password dari form login
 	$username = $_POST["username"];
 	$password = $_POST["password"];
-
+	// Menjalankan query pada tabel user untuk mengambil data user dengan username yang sesuai dengan inputan username
 	$result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
-	//cek user name
-	if (mysqli_num_rows($result)===1) {
-		//cek password
+	// Jika query menghasilkan satu baris, maka:
+	if (mysqli_num_rows($result) === 1) {
+		// Mengambil data user dari hasil query
 		$row = mysqli_fetch_assoc($result);
-		if(password_verify($password, $row["password"])){
-			//set session
-			$_SESSION["login"]=true;
-			//cek cookie
+		// Melakukan verifikasi password
+		if (password_verify($password, $row["password"])) {
+			// Jika password benar, maka set session login menjadi true
+			$_SESSION["login"] = true;
+			// Jika checkbox remember me di-check, maka set cookie
 			if (isset($_POST['remeber'])) {
-				//buat cookie
-				setcookie('id', $row['id'],time()+60);
-				setcookie('key', hash('sha256', $row['username']),time()+120);
+				// Membuat cookie dengan nama 'id' dan nilai id user yang sedang login
+				setcookie('id', $row['id'], time() + 60);
+				// Membuat cookie dengan nama 'key' dan nilai hash sha256 dari username user yang sedang login
+				setcookie('key', hash('sha256', $row['username']), time() + 120);
 			}
+			// Redirect ke halaman index.php
 			header("Location: index.php");
 			exit;
-		}else{
+		} else {
+			// Jika password salah, maka set variabel error menjadi true
 			$error = true;
 		}
-	}else{
+	} else {
+		// Jika username tidak ditemukan di database, maka set variabel 
 		$error = true;
 	}
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Halaman Login</title>
 </head>
+
 <body>
 	<h1>Halaman Login</h1>
 	<?php if (isset($error)) : ?>
@@ -73,7 +87,7 @@ if (isset($_POST["login"])) {
 				<input type="password" name="password" id="password">
 			</li>
 			<li>
-				<input type="checkbox" name="remember" id="remember">				
+				<input type="checkbox" name="remember" id="remember">
 				<label for="remember">Remember Me</label>
 			</li>
 			<li>
@@ -82,4 +96,5 @@ if (isset($_POST["login"])) {
 		</ul>
 	</form>
 </body>
+
 </html>

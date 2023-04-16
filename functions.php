@@ -1,16 +1,36 @@
 <?php
 //koneksi database
-$conn = mysqli_connect("localhost","root","","phpdasar");
-function query($query){
+$conn = mysqli_connect("localhost", "root", "", "phpdasar");
+// if (!$conn) {
+// 	die("Koneksi gagal: " . mysqli_connect_error());
+// }
+// echo "Koneksi berhasil";
+
+// Fungsi untuk menjalankan query pada database dan mengembalikan hasil
+function query($query)
+{
+	// Mengakses koneksi database yang telah dibuat sebelumnya
 	global $conn;
+	// Menjalankan query pada database
 	$result = mysqli_query($conn, $query);
+	// Membuat array kosong untuk menampung hasil
 	$rows = [];
+	// Mengambil setiap baris hasil query dan memasukkannya ke dalam array
 	while ($row = mysqli_fetch_assoc($result)) {
 		$rows[] = $row;
 	}
+	// Mengembalikan hasil dalam bentuk array asosiatif
 	return $rows;
 }
-function tambah($data){
+// Melakukan query pada tabel user dan menyimpan hasilnya dalam variabel $user
+$user = query("SELECT * FROM tbl_user");
+// Melakukan perulangan untuk setiap baris dari hasil query dan menampilkan nilai kolom 'nama'
+foreach ($user as $data) {
+	echo $data['nm_user'] . '<br>';
+}
+
+function tambah($data)
+{
 	global $conn;
 	$nim = htmlspecialchars($data["nim"]);
 	$nama = htmlspecialchars($data["nama"]);
@@ -19,17 +39,18 @@ function tambah($data){
 
 	// upload gambar
 	$gambar = upload();
-	if(!$gambar){
+	if (!$gambar) {
 		return false;
 	}
 
 	$query = "INSERT INTO mahasiswa VALUES
 			('','$nim','$nama','$email','$jurusan','$gambar')";
-	mysqli_query($conn,$query);
+	mysqli_query($conn, $query);
 
 	return mysqli_affected_rows($conn);
 }
-function upload(){
+function upload()
+{
 	global $conn;
 	$namaFile = $_FILES['gambar']['name'];
 	$ukuranFile = $_FILES['gambar']['size'];
@@ -46,7 +67,7 @@ function upload(){
 		return false;
 	}
 	//cek apakah yg d'upload gambar apa bukan
-	$ekstensiGambarValid = ['jpg','jpeg','png'];
+	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
 	$ekstensiGambar = explode('.', $namaFile);
 	$ekstensiGambar = strtolower(end($ekstensiGambar));
 	if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
@@ -58,7 +79,7 @@ function upload(){
 		return false;
 	}
 	//cek ukuran gambar
-	if ($ukuranFile>2500000) {
+	if ($ukuranFile > 2500000) {
 		echo "
 			<script>
 				alert('Ukuran Gambar Terlalu Besar (maks:2,5Mb');
@@ -74,12 +95,14 @@ function upload(){
 	move_uploaded_file($tmpName, 'img/' . $namaFilebaru);
 	return $namaFilebaru;
 }
-function hapus($id){
+function hapus($id)
+{
 	global $conn;
 	mysqli_query($conn, "DELETE FROM mahasiswa WHERE id = $id");
 	return mysqli_affected_rows($conn);
 }
-function ubah($data){
+function ubah($data)
+{
 	global $conn;
 	$id = $data["id"];
 	$nim = htmlspecialchars($data["nim"]);
@@ -89,27 +112,29 @@ function ubah($data){
 	$gambarLama = htmlspecialchars($data["gambarLama"]);
 
 	//cek apa ganti gamabar
-	if ($_FILES['gambar']['error']===4) {
+	if ($_FILES['gambar']['error'] === 4) {
 		$gambar = $gambarLama;
-	}else{
+	} else {
 		$gambar = upload();
 	}
 
 	$query = "UPDATE mahasiswa SET nim='$nim', nama='$nama', email='$email', jurusan='$jurusan', gambar='$gambar' WHERE id = '$id'";
-	mysqli_query($conn,$query);
+	mysqli_query($conn, $query);
 
 	return mysqli_affected_rows($conn);
 }
-function cari($keyword){
+function cari($keyword)
+{
 	global $conn;
 	$query = "SELECT * FROM mahasiswa WHERE nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'";
 	return query($query);
 }
-function registrasi($data){
+function registrasi($data)
+{
 	global $conn;
 	$username = strtolower(stripslashes($data["username"]));
-	$password = mysqli_real_escape_string($conn,$data["password"]);
-	$password2 = mysqli_real_escape_string($conn,$data["password2"]);
+	$password = mysqli_real_escape_string($conn, $data["password"]);
+	$password2 = mysqli_real_escape_string($conn, $data["password2"]);
 
 	//cek user name
 	$result = mysqli_query($conn, "SELECT username FROM user WHERE username = '$username'");
@@ -137,4 +162,3 @@ function registrasi($data){
 	mysqli_query($conn, "INSERT INTO user VALUES('','$username','$password')");
 	return mysqli_affected_rows($conn);
 }
-?>

@@ -1,0 +1,11 @@
+1. Buat file functions.php
+2. Buat koneksi ke database yang ingin digunakan, menggunakan php native
+3. Melakukan test, apakah database berhasil dikoneksi atau tidak
+4. Membuat fungsi untuk menjalankan query pada database dan mengembalikan hasil
+5. Melakukan test, apakah data yang berada didalam tabel database berhasil didapatkan
+6. Buat tampilan login menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
+7. Mengimport file functions.php pada file login dan memulai sesi untuk penggunaan variabel global $_SESSION
+8. Melakukan proses ketika tombol login ditekan
+9. Membuat sebuah dashboard sementara untuk melakukan test, dengan nama file index
+10. Jika sudah berhasil maka lanjutkan untuk membuat cookie dan membuat session pada file login
+11. Merubah tampilan dashboard menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
