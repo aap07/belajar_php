@@ -73,8 +73,11 @@ if (isset($_POST["login"])) {
 
 <body>
 	<h1>Halaman Login</h1>
+	// Ini adalah bagian dari struktur kontrol PHP yang disebut sebagai "conditional statement" atau "percabangan".
 	<?php if (isset($error)) : ?>
+		// Jika variabel $error telah di-set oleh kode sebelumnya, maka akan menampilkan pesan kesalahan pada halaman web.
 		<p style="color: red; font-style: italic;">username / password salah</p>
+	// Syntax endif digunakan untuk menutup blok kondisi IF di baris sebelumnya.
 	<?php endif; ?>
 	<form action="" method="post">
 		<ul>
