@@ -10,8 +10,8 @@ if (!isset($_SESSION["login"])) {
 }
 //Cek apakah tombol submit sudah ditekan atau belum
 if (isset($_POST["register"])) {
-	//Jika sudah ditekan, cek apakah data berhasil ditambahkan atau tidak
-	if (registrasi($_POST) > 0) {
+	//Jika sudah ditekan, jalankan fungsi tambah_user pada file functions.php dan cek apakah data berhasil ditambahkan atau tidak
+	if (tambah_user($_POST) > 0) {
 		//Jika berhasil, tampilkan pesan sukses dan redirect ke halaman utama
 		echo "
 			<script>
@@ -31,6 +31,7 @@ if (isset($_POST["register"])) {
 }
 ?>
 <!DOCTYPE html>
+
 <head>
 	<title>Home</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -57,7 +58,7 @@ if (isset($_POST["register"])) {
 	</ul>
 	<br>
 	<br>
-	<form action="" method="post">
+	<form action="" method="post" enctype="multipart/form-data">
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="inputGroup-sizing-default">Nama</span>
 			<input type="text" class="form-control" name="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">

@@ -49,15 +49,29 @@ function tambah($data)
 
 	return mysqli_affected_rows($conn);
 }
+//fungsi untuk mengupload gambar
 function upload()
 {
 	global $conn;
+	//mendapatkan informasi file gambar yang diupload
+	//mendapatkan nama file gambar
 	$namaFile = $_FILES['gambar']['name'];
+	//mendapatkan ukuran file gambar
 	$ukuranFile = $_FILES['gambar']['size'];
+	//mendapatkan kode error jika ada
 	$error = $_FILES['gambar']['error'];
+	//mendapatkan path sementara file gambar
 	$tmpName = $_FILES['gambar']['tmp_name'];
-
-	//cek apakah ada gambar yg d'upload
+	//cek apakah gambar sudah dipilih atau belum
+	// Terdapat beberapa nilai error yang umumnya digunakan dalam PHP, yaitu:
+	// 0: Tidak terdapat kesalahan, file berhasil diupload.
+	// 1: Ukuran file melebihi batas yang diizinkan oleh server.
+	// 2: Ukuran file melebihi batas yang diizinkan oleh form.
+	// 3: File hanya berhasil diupload sebagian.
+	// 4: Tidak ada file yang diupload.
+	// 6: Tidak ditemukan folder temporary.
+	// 7: Gagal menyimpan file ke server.
+	// 8: File upload dihentikan oleh ekstensi PHP.
 	if ($error === 4) {
 		echo "
 			<script>
@@ -66,10 +80,13 @@ function upload()
 		";
 		return false;
 	}
-	//cek apakah yg d'upload gambar apa bukan
+	//mendefinisikan jenis ekstensi file gambar yang diijinkan
 	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+	//Membagi string nama file gambar dengan karakter "." dan menyimpannya dalam array $ekstensiGambar.
 	$ekstensiGambar = explode('.', $namaFile);
+	//lalu, end() digunakan untuk mengambil elemen terakhir dari array, yaitu ekstensi file dan strtolower() digunakan untuk mengubah semua huruf dalam ekstensi file menjadi huruf kecil.
 	$ekstensiGambar = strtolower(end($ekstensiGambar));
+	//cek apakah ekstensi gambar yang diupload sesuai dengan yang diijinkan
 	if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
 		echo "
 			<script>
@@ -78,7 +95,7 @@ function upload()
 		";
 		return false;
 	}
-	//cek ukuran gambar
+	//cek ukuran file gambar
 	if ($ukuranFile > 2500000) {
 		echo "
 			<script>
@@ -87,12 +104,13 @@ function upload()
 		";
 		return false;
 	}
-	//upload gambar
-	//ganti nama gambar
+	//membuat nama file gambar baru dengan memakai uniqid() dan menggabungkan dengan ekstensi gambar
 	$namaFilebaru = uniqid();
 	$namaFilebaru .= ".";
 	$namaFilebaru .= $ekstensiGambar;
+	//memindahkan file gambar ke direktori yang ditentukan
 	move_uploaded_file($tmpName, 'img/' . $namaFilebaru);
+	//mengembalikan nama file gambar baru
 	return $namaFilebaru;
 }
 function hapus($id)
@@ -130,7 +148,7 @@ function cari($keyword)
 	return query($query);
 }
 //fungsi untuk meregistrasi user baru
-function registrasi($data)
+function tambah_user($data)
 {
 	global $conn;
 	//mengambil username dan menghapus karakter slash

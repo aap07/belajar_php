@@ -6,17 +6,19 @@
 6. Buat tampilan login menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
 7. Mengimport file functions.php pada file login dan memulai sesi untuk penggunaan variabel global $_SESSION ( login.php line 2-5 )
 8. Melakukan proses ketika tombol login ditekan ( login.php line 31-64 )
-9. Membuat sebuah dashboard sementara untuk melakukan test, dengan nama file index
-10. Jika sudah berhasil maka lanjutkan untuk membuat cookie dan membuat session pada file login ( login.php line 7-29 )
-11. Merubah tampilan dashboard menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
-12. Mengimport file functions.php pada file login dan memulai sesi untuk penggunaan variabel global $_SESSION ( index.php line 2-9 )
-13. Lakukan pengecekan pada $_SESSION ( index.php line 6-10 )
-14. Tampilkan data user dan gunakan halaman ( index.php line 11-23 )
-15. Tampilkan tabel untuk menampung data user ( index.php line 70-92 )
-16. Kita buat pagination atau halaman untuk tabelnya ( index.php line 49 -69 )
-17. Buat file logout php untuk menghapus seesion dan cookie
-18. Buatlah tombol tambah data dan tombol logout ( index.php line 51-52 )
-19. Buatlah file baru dengan nama tambah
-20. Mengimport file functions.php pada file login dan memulai sesi untuk penggunaan variabel global $_SESSION ( tambah.php line 2-9 )
-21. Buat fungsi tambah ( tambah.php line 11-31 )
-22. Buat fungsi tambah ( functions.php line 132-159)
+9. Membuat pesan error ketika username dan password tidak sesuai ( login.php line 164-168 )
+10. Membuat sebuah dashboard sementara untuk melakukan test, dengan nama file index
+11. Jika sudah berhasil maka lanjutkan untuk membuat cookie dan membuat session pada file login ( login.php line 7-29 )
+12. Merubah tampilan dashboard menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
+13. Mengimport file functions.php pada file index dan memulai sesi untuk penggunaan variabel global $_SESSION ( index.php line 2-9 )
+14. Lakukan pengecekan pada $_SESSION ( index.php line 6-10 )
+15. Tampilkan data user dan gunakan halaman ( index.php line 11-23 )
+16. Tampilkan tabel untuk menampung data user ( index.php line 70-92 )
+17. Kita buat pagination atau halaman untuk tabelnya ( index.php line 49 -69 )
+18. Buat file logout php untuk menghapus seesion dan cookie
+19. Buatlah tombol tambah data dan tombol logout ( index.php line 51-52 )
+20. Buatlah file baru dengan nama tambah
+21. Mengimport file functions.php pada file tambah dan memulai sesi untuk penggunaan variabel global $_SESSION ( tambah.php line 2-9 )
+22. Buat fungsi didalam file tambah.php ( tambah.php line 11-31 )
+23. Buat fungsi tambah_user ( functions.php line 132-159 )
+24. Buat fungsi untuk upload_gambar ( functions.php line 52-115 )

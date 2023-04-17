@@ -23,6 +23,7 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 ?>
 
 <!DOCTYPE html>
+
 <head>
 	<title>Home</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -75,8 +76,9 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 		<thead class="table-dark">
 			<tr>
 				<th>No. </th>
-				<th>Nama</th>
 				<th>Username</th>
+				<th>Nama</th>
+				<th>Foto</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,8 +89,9 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 				<tr>
 					<!-- Kemudian variabel $i ditambah 1 untuk menambah nomor urut pada baris selanjutnya. -->
 					<td><?= $i + $awalData ?></td>
-					<td><?= $row["nm_user"]; ?></td>
 					<td><?= $row["username"]; ?></td>
+					<td><?= $row["nm_user"]; ?></td>
+					<td><img src="img/<?= $row["foto"]; ?>" width="50"></td>
 				</tr>
 				<?php $i++; ?>
 			<?php endforeach; ?>
