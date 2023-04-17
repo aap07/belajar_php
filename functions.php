@@ -23,11 +23,11 @@ function query($query)
 	return $rows;
 }
 // Melakukan query pada tabel user dan menyimpan hasilnya dalam variabel $user
-// $user = query("SELECT * FROM tbl_user");
+$user = query("SELECT * FROM tbl_user");
 // Melakukan perulangan untuk setiap baris dari hasil query dan menampilkan nilai kolom 'nama'
-// foreach ($user as $data) {
-	// echo $data['nm_user'] . '<br>';
-// }
+foreach ($user as $data) {
+	echo $data['nm_user'] . '<br>';
+}
 
 function tambah($data)
 {
