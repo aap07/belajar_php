@@ -71,6 +71,10 @@ if (isset($_POST["register"])) {
 			<span class="input-group-text" id="inputGroup-sizing-default">Password</span>
 			<input type="text" class="form-control" name="password" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 		</div>
+		<div class="input-group mb-3">
+			<span class="input-group-text" id="inputGroup-sizing-default">Foto</span>
+			<input type="file" class="form-control" name="gambar" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+		</div>
 		<div class="d-flex justify-content-center mt-3 login_container">
 			<button type="submit" name="register" class="btn login_btn">Register</button>
 		</div>

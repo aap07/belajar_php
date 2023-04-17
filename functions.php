@@ -37,9 +37,10 @@ function tambah($data)
 	$email = htmlspecialchars($data["email"]);
 	$jurusan = htmlspecialchars($data["jurusan"]);
 
-	// upload gambar
+	//Memanggil fungsi upload dan menyimpan hasilnya pada variabel $gambar
 	$gambar = upload();
 	if (!$gambar) {
+		//jika fungsi upload mengembalikan nilai false, maka fungsi yang memanggilnya juga mengembalikan false
 		return false;
 	}
 
@@ -157,7 +158,12 @@ function tambah_user($data)
 	$name = strtolower(stripslashes($data["name"]));
 	//mengambil password dan mencegah karakter yang tidak diinginkan seperti tanda petik tunggal, dll
 	$password = mysqli_real_escape_string($conn, $data["password"]);
-
+	//Memanggil fungsi upload dan menyimpan hasilnya pada variabel $gambar
+	$gambar = upload();
+	if (!$gambar) {
+		//jika fungsi upload mengembalikan nilai false, maka fungsi yang memanggilnya juga mengembalikan false
+		return false;
+	}
 	//cek apakah username sudah digunakan sebelumnya
 	$result = mysqli_query($conn, "SELECT username FROM tbl_user WHERE username = '$username'");
 	if (mysqli_fetch_assoc($result)) {
@@ -171,7 +177,7 @@ function tambah_user($data)
 	//enkripsi password sebelum disimpan di database
 	$password = password_hash($password, PASSWORD_DEFAULT);
 	//tambahkan user baru ke dalam database
-	mysqli_query($conn, "INSERT INTO tbl_user VALUES('','$username','$name','$password')");
+	mysqli_query($conn, "INSERT INTO tbl_user VALUES('','$username','$name','$gambar','$password')");
 	//mengembalikan jumlah baris yang terpengaruh oleh query sebelumnya
 	return mysqli_affected_rows($conn);
 }
