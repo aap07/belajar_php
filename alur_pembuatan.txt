@@ -10,15 +10,20 @@
 10. Membuat sebuah dashboard sementara untuk melakukan test, dengan nama file index
 11. Jika sudah berhasil maka lanjutkan untuk membuat cookie dan membuat session pada file login ( login.php line 7-29 )
 12. Merubah tampilan dashboard menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
-13. Mengimport file functions.php pada file index dan memulai sesi untuk penggunaan variabel global $_SESSION ( index.php line 2-9 )
+13. Mengimport file functions.php pada file index dan memulai sesi untuk penggunaan variabel global $_SESSION ( index.php line 2-10 )
 14. Lakukan pengecekan pada $_SESSION ( index.php line 6-10 )
 15. Tampilkan data user dan gunakan halaman ( index.php line 11-23 )
-16. Tampilkan tabel untuk menampung data user ( index.php line 70-92 )
-17. Kita buat pagination atau halaman untuk tabelnya ( index.php line 49 -69 )
-18. Buat file logout php untuk menghapus seesion dan cookie
-19. Buatlah tombol tambah data dan tombol logout ( index.php line 51-52 )
-20. Buatlah file baru dengan nama tambah
-21. Mengimport file functions.php pada file tambah dan memulai sesi untuk penggunaan variabel global $_SESSION ( tambah.php line 2-9 )
-22. Buat fungsi didalam file tambah.php ( tambah.php line 11-31 )
-23. Buat fungsi tambah_user ( functions.php line 132-159 )
-24. Buat fungsi untuk upload_gambar ( functions.php line 52-115 )
+16. Buatlah tombol tambah data dan tombol logout ( index.php line 51-52 )
+17. Tampilkan tabel untuk menampung data user ( index.php line 75-104 )
+18. Kita buat pagination atau halaman untuk tabelnya ( index.php line 56 -73 )
+19. Buat file logout php untuk menghapus seesion dan cookie
+20. Buatlah file baru dengan nama tambah_user
+21. Mengimport file functions.php pada file tambah_user dan memulai sesi untuk penggunaan variabel global $_SESSION ( tambah_user.php line 2-10 )
+22. Buat fungsi didalam file tambah_user.php ( tambah.php line 11-31 )
+23. Buat fungsi tambah_user ( functions.php line 32-64 )
+24. Buat fungsi untuk upload_gambar ( functions.php line 66-129 )
+25. Buatlah file baru dengan nama ubah_user
+26. Mengimport file functions.php pada file ubah_user dan memulai sesi untuk penggunaan variabel global $_SESSION ( ubah_user.php line 2-10 )
+27. Buat fungsi didalam file tambah_user.php ( tambah.php line 11-35 )
+28. Buat fungsi ubah_user ( functions.php line 136-163 )
+29. Buat fungsi hapus_user ( functions.php line 166-176 )

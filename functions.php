@@ -10,6 +10,7 @@ $conn = mysqli_connect("localhost", "root", "", "e_commerce");
 function query($query)
 {
 	// Mengakses koneksi database yang telah dibuat sebelumnya
+	// mengakses variabel $conn yang didefinisikan di luar fungsi
 	global $conn;
 	// Menjalankan query pada database
 	$result = mysqli_query($conn, $query);
@@ -29,30 +30,47 @@ function query($query)
 // 	echo $data['nm_user'] . '<br>';
 // }
 
-function tambah($data)
+//fungsi untuk meregistrasi user baru
+function tambah_user($data)
 {
+	// Mengakses koneksi database yang telah dibuat sebelumnya
+	// mengakses variabel $conn yang didefinisikan di luar fungsi
 	global $conn;
-	$nim = htmlspecialchars($data["nim"]);
-	$nama = htmlspecialchars($data["nama"]);
-	$email = htmlspecialchars($data["email"]);
-	$jurusan = htmlspecialchars($data["jurusan"]);
-
+	//mengambil username dan menghapus karakter slash
+	$username = strtolower(stripslashes($data["username"]));
+	//mengambil nama dan menghapus karakter slash
+	$name = strtolower(stripslashes($data["name"]));
+	//mengambil password dan mencegah karakter yang tidak diinginkan seperti tanda petik tunggal, dll
+	$password = mysqli_real_escape_string($conn, $data["password"]);
 	//Memanggil fungsi upload dan menyimpan hasilnya pada variabel $gambar
 	$gambar = upload();
 	if (!$gambar) {
 		//jika fungsi upload mengembalikan nilai false, maka fungsi yang memanggilnya juga mengembalikan false
 		return false;
 	}
-
-	$query = "INSERT INTO mahasiswa VALUES
-			('','$nim','$nama','$email','$jurusan','$gambar')";
-	mysqli_query($conn, $query);
-
+	//cek apakah username sudah digunakan sebelumnya
+	$result = mysqli_query($conn, "SELECT username FROM tbl_user WHERE username = '$username'");
+	if (mysqli_fetch_assoc($result)) {
+		echo "
+			<script>
+				alert('Username Sudah Ada');
+			</script>
+		";
+		return false;
+	}
+	//enkripsi password sebelum disimpan di database
+	$password = password_hash($password, PASSWORD_DEFAULT);
+	//tambahkan user baru ke dalam database
+	mysqli_query($conn, "INSERT INTO tbl_user VALUES('','$username','$name','$gambar','$password')");
+	//mengembalikan jumlah baris yang terpengaruh oleh query sebelumnya
 	return mysqli_affected_rows($conn);
 }
+
 //fungsi untuk mengupload gambar
 function upload()
 {
+	// Mengakses koneksi database yang telah dibuat sebelumnya
+	// mengakses variabel $conn yang didefinisikan di luar fungsi
 	global $conn;
 	//mendapatkan informasi file gambar yang diupload
 	//mendapatkan nama file gambar
@@ -114,70 +132,45 @@ function upload()
 	//mengembalikan nama file gambar baru
 	return $namaFilebaru;
 }
-function hapus($id)
-{
-	global $conn;
-	mysqli_query($conn, "DELETE FROM mahasiswa WHERE id = $id");
-	return mysqli_affected_rows($conn);
-}
-function ubah($data)
-{
-	global $conn;
-	$id = $data["id"];
-	$nim = htmlspecialchars($data["nim"]);
-	$nama = htmlspecialchars($data["nama"]);
-	$email = htmlspecialchars($data["email"]);
-	$jurusan = htmlspecialchars($data["jurusan"]);
-	$gambarLama = htmlspecialchars($data["gambarLama"]);
 
-	//cek apa ganti gamabar
+//fungsi untuk ubah data user
+function ubah_user($data)
+{
+	// Mengakses koneksi database yang telah dibuat sebelumnya
+	// mengakses variabel $conn yang didefinisikan di luar fungsi
+	global $conn;
+	// mengambil nilai id dari data yang diberikan dari file ubah_user
+	$id = $data["id"];
+	// mengambil nilai username dari data dalam file ubah_user dan melakukan sanitasi karakter khusus
+	$username = htmlspecialchars($data["username"]);
+	// mengambil nilai name dari data dalam file ubah_user dan melakukan sanitasi karakter khusus
+	$name = htmlspecialchars($data["name"]);
+	// mengambil nilai gambarLama dari data dalam file ubah_user dan melakukan sanitasi karakter khusus
+	$gambarLama = htmlspecialchars($data["gambarLama"]);
+	// memeriksa apakah terdapat error pada file yang diupload
 	if ($_FILES['gambar']['error'] === 4) {
+		// jika ada error, gunakan gambar lama
 		$gambar = $gambarLama;
 	} else {
+		// jika tidak ada error, upload gambar baru
 		$gambar = upload();
 	}
-
-	$query = "UPDATE mahasiswa SET nim='$nim', nama='$nama', email='$email', jurusan='$jurusan', gambar='$gambar' WHERE id = '$id'";
+	// membuat query SQL untuk mengubah data user dengan nilai baru dengan kolom id pada tbl_user sebagai acuan
+	$query = "UPDATE tbl_user SET username='$username', nm_user='$name',foto='$gambar' WHERE id_user = '$id'";
+	// menjalankan query SQL
 	mysqli_query($conn, $query);
-
+	// mengembalikan jumlah baris yang terpengaruh oleh query SQL
 	return mysqli_affected_rows($conn);
 }
-function cari($keyword)
+
+//fungsi untuk hapus user
+function hapus_user($id)
 {
+	// Mengakses koneksi database yang telah dibuat sebelumnya
+	// mengakses variabel $conn yang didefinisikan di luar fungsi
 	global $conn;
-	$query = "SELECT * FROM mahasiswa WHERE nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'";
-	return query($query);
-}
-//fungsi untuk meregistrasi user baru
-function tambah_user($data)
-{
-	global $conn;
-	//mengambil username dan menghapus karakter slash
-	$username = strtolower(stripslashes($data["username"]));
-	//mengambil nama dan menghapus karakter slash
-	$name = strtolower(stripslashes($data["name"]));
-	//mengambil password dan mencegah karakter yang tidak diinginkan seperti tanda petik tunggal, dll
-	$password = mysqli_real_escape_string($conn, $data["password"]);
-	//Memanggil fungsi upload dan menyimpan hasilnya pada variabel $gambar
-	$gambar = upload();
-	if (!$gambar) {
-		//jika fungsi upload mengembalikan nilai false, maka fungsi yang memanggilnya juga mengembalikan false
-		return false;
-	}
-	//cek apakah username sudah digunakan sebelumnya
-	$result = mysqli_query($conn, "SELECT username FROM tbl_user WHERE username = '$username'");
-	if (mysqli_fetch_assoc($result)) {
-		echo "
-			<script>
-				alert('Username Sudah Ada');
-			</script>
-		";
-		return false;
-	}
-	//enkripsi password sebelum disimpan di database
-	$password = password_hash($password, PASSWORD_DEFAULT);
-	//tambahkan user baru ke dalam database
-	mysqli_query($conn, "INSERT INTO tbl_user VALUES('','$username','$name','$gambar','$password')");
-	//mengembalikan jumlah baris yang terpengaruh oleh query sebelumnya
+	// menjalankan query untuk menghapus data tbl_user dengan id tertentu
+	mysqli_query($conn, "DELETE FROM tbl_user WHERE id_user = $id");
+	// mengembalikan jumlah baris yang terpengaruh dari operasi hapus
 	return mysqli_affected_rows($conn);
 }

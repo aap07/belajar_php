@@ -49,7 +49,7 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 		</li>
 	</ul>
 	<br>
-	<a class="btn btn-outline-primary" href="tambah.php">Tambah Data</a>
+	<a class="btn btn-outline-primary" href="tambah_user.php">Tambah Data</a>
 	<a class="btn btn-outline-danger" href="logout.php">Logout</a>
 	<br>
 	<br>
@@ -79,6 +79,7 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 				<th>Username</th>
 				<th>Nama</th>
 				<th>Foto</th>
+				<th>Aksi</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -92,6 +93,10 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 					<td><?= $row["username"]; ?></td>
 					<td><?= $row["nm_user"]; ?></td>
 					<td><img src="img/<?= $row["foto"]; ?>" width="50"></td>
+					<td>
+						<a class="btn btn-outline-primary btn-sm" href="ubah_user.php?id=<?= $row["id_user"]; ?>">Ubah</a> |
+						<a class="btn btn-outline-danger btn-sm"  href="hapus_user.php?id=<?= $row["id_user"]; ?>" onclick="return confirm('Yakin');">Hapus</a>
+					</td>
 				</tr>
 				<?php $i++; ?>
 			<?php endforeach; ?>
