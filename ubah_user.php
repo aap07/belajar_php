@@ -24,7 +24,7 @@ if (isset($_POST["ubah"])) {
 				</script>
 			";
 	} else {
-		//Jika gagal, tampilkan pesan gagal dan redirect ke halaman utama
+		//Jika berhasil, tampilkan pesan sukses dan redirect ke halaman utama
 		echo "
 				<script>
 					alert('Data Gagal Diubah');
