@@ -10,7 +10,7 @@ if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
 	$id = $_COOKIE['id'];
 	$key = $_COOKIE['key'];
 	// Query ke database untuk mengambil username dengan id yang didapat dari cookie
-	$result = mysqli_query($conn, "SELECT username FROM user WHERE id ='$id'");
+	$result = mysqli_query($conn, "SELECT username FROM tbl_user WHERE id ='$id'");
 	$row = mysqli_fetch_assoc($result);
 	// Mengecek apakah hash dari username sama dengan nilai key pada cookie
 	if ($key === hash('sha256', $row['username'])) {
@@ -34,7 +34,7 @@ if (isset($_POST["login"])) {
 	$username = $_POST["username"];
 	$password = $_POST["password"];
 	// Menjalankan query pada tabel user untuk mengambil data user dengan username yang sesuai dengan inputan username
-	$result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
+	$result = mysqli_query($conn, "SELECT * FROM tbl_user WHERE username = '$username'");
 	// Jika query menghasilkan satu baris, maka:
 	if (mysqli_num_rows($result) === 1) {
 		// Mengambil data user dari hasil query
@@ -164,36 +164,36 @@ if (isset($_POST["login"])) {
 				<div class="d-flex justify-content-center">
 					<div class="brand_logo_container">
 						<img src="img/new_logo_cstore.png" class="brand_logo" alt="Logo">
+						<?php if (isset($error)) : ?>
+							<!-- Jika variabel $error telah di-set oleh kode sebelumnya, maka akan menampilkan pesan kesalahan pada halaman web. -->
+							<p style="color: red; font-style: italic;">username / password salah</p>
+							<!-- Syntax endif digunakan untuk menutup blok kondisi IF di baris sebelumnya. -->
+						<?php endif; ?>
 					</div>
 				</div>
+				<!-- Ini adalah bagian dari struktur kontrol PHP yang disebut sebagai "conditional statement" atau "percabangan". -->
 				<div class="d-flex justify-content-center form_container">
-					<!-- Ini adalah bagian dari struktur kontrol PHP yang disebut sebagai "conditional statement" atau "percabangan". -->
-					<?php if (isset($error)) : ?>
-						<!-- Jika variabel $error telah di-set oleh kode sebelumnya, maka akan menampilkan pesan kesalahan pada halaman web. -->
-						<p style="color: red; font-style: italic;">username / password salah</p>
-						<!-- Syntax endif digunakan untuk menutup blok kondisi IF di baris sebelumnya. -->
-					<?php endif; ?>
-					<form>
+					<form action="" method="post">
 						<div class="input-group mb-3">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="" class="form-control input_user" value="" placeholder="username">
+							<input type="text" name="username" class="form-control input_user" value="" placeholder="username">
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-key"></i></span>
 							</div>
-							<input type="password" name="" class="form-control input_pass" value="" placeholder="password">
+							<input type="password" name="password" class="form-control input_pass" value="" placeholder="password">
 						</div>
 						<div class="form-group">
 							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="customControlInline">
-								<label class="custom-control-label" for="customControlInline">Remember me</label>
+								<input type="checkbox" class="custom-control-input" id="remember">
+								<label class="custom-control-label" for="remember">Remember me</label>
 							</div>
 						</div>
 						<div class="d-flex justify-content-center mt-3 login_container">
-							<button type="button" name="button" class="btn login_btn">Login</button>
+							<button type="submit" name="login" class="btn login_btn">Login</button>
 						</div>
 					</form>
 				</div>
