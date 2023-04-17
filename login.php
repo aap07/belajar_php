@@ -17,9 +17,6 @@ if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
 		// Jika sama, maka user dianggap sudah login dan session di-set
 		$_SESSION['login'] = true;
 	}
-	// if ($_COOKIE['login'] == 'true') {
-	// 	$_SESSION['login'] == true;
-	//}
 }
 
 // Cek apakah user sudah login, jika sudah redirect ke halaman index

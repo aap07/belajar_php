@@ -1,86 +1,95 @@
 <?php
+// Mengimpor file functions.php yang berisi definisi fungsi dan koneksi database
+require 'functions.php';
+// Memulai sesi untuk penggunaan variabel global $_SESSION
 session_start();
-//cek session
-if ( !isset($_SESSION["login"])) {
+// Cek apakah variabel session "login" sudah di-set, jika belum maka user akan di-redirect ke halaman login
+if (!isset($_SESSION["login"])) {
 	header("Location: login.php");
 	exit;
 }
-//koneksi db
-require 'functions.php';
-//pagination
+// Deklarasi variabel untuk menentukan jumlah data yang akan ditampilkan pada setiap halaman
 $jumlahDataPerHalaman = 2;
-$jumlahData = count(query("SELECT * FROM mahasiswa"));
-$jumlahHalaman = ceil($jumlahData/$jumlahDataPerHalaman);
-//nilai true $_GET["halaman"]
+// Menghitung jumlah data yang ada di database
+$jumlahData = count(query("SELECT * FROM tbl_user"));
+// Menghitung jumlah halaman yang diperlukan
+$jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+// Menentukan halaman aktif saat ini, jika tidak ada parameter halaman di URL maka halaman aktif = 1
 $halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+// Menentukan awal data yang akan ditampilkan pada halaman aktif
 $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
-//$awalData = data keberapa
-//$jumlahDataPerHalaman = berapa data yg ditampilkan
-$mahasiswa = query("SELECT * FROM mahasiswa LIMIT $awalData, $jumlahDataPerHalaman");
-//tombol cari d'klik
-if (isset($_POST["cari"])) {
-	$mahasiswa = cari($_POST["keyword"]);
-}
+// Mengambil data user dari database sesuai dengan halaman aktif dan jumlah data per halaman
+$user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 ?>
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Halaman Admin</title>
+	<title>Home</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<style>
+	</style>
 </head>
+
 <body>
-	<a href="logout.php">Logout</a>
-	<h1>Daftar Mahasiswa</h1>
-	<a href="tambah.php">Tambah Data Mahasiswa</a>
-	<br><br>
-	<form action="" method="post">
-		<input type="text" name="keyword" size="30" autofocus placeholder="Masukan Keyword Pencarian" autocomplete="off">
-		<button type="text" name="cari">Cari</button>
-	</form>
-	<br><br>
-	<!-- navigasi pagination -->
-	<?php if($halamanAktif >1) : ?>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" aria-current="page" href="#">User</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">Produk</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">Transaksi</a>
+		</li>
+	</ul>
+	<br>
+	<br>
+	<!-- Jika halaman aktif lebih besar dari 1 maka akan menampilkan tombol untuk ke halaman sebelumnya -->
+	<?php if ($halamanAktif > 1) : ?>
 		<a href="?halaman=<?= $halamanAktif - 1 ?>">&laquo;</a>
 	<?php endif; ?>
-	<?php for ($i=1;$i<=$jumlahHalaman;$i++) : ?>
-		<?php if($i==$halamanAktif) : ?>
+	<!-- Perulangan for digunakan untuk menampilkan link ke semua halaman yang ada -->
+	<?php for ($i = 1; $i <= $jumlahHalaman; $i++) : ?>
+		<?php if ($i == $halamanAktif) : ?>
+			<!-- // Jika nomor halaman sama dengan halaman aktif maka akan menampilkan nomor halaman dengan warna merah dan bold -->
 			<a href="?halaman=<?= $i; ?>" style="font-weight: bold; color: red;"><?= $i; ?></a>
 		<?php else : ?>
+			<!-- // Jika nomor halaman tidak sama dengan halaman aktif maka akan menampilkan nomor halaman biasa tanpa style -->
 			<a href="?halaman=<?= $i; ?>"><?= $i; ?></a>
 		<?php endif; ?>
 	<?php endfor; ?>
-	<?php if($halamanAktif <$jumlahHalaman) : ?>
+	<!-- Jika halaman aktif kurang dari jumlah halaman maka akan menampilkan tombol untuk ke halaman selanjutnya -->
+	<?php if ($halamanAktif < $jumlahHalaman) : ?>
 		<a href="?halaman=<?= $halamanAktif + 1 ?>">&raquo;</a>
 	<?php endif; ?>
 	<br>
-	<table border="1" cellpadding="10" cellspacing="0">
-		<tr>
-			<th>No. </th>
-			<th>Aksi</th>
-			<th>Gambar</th>
-			<th>NIM</th>
-			<th>Nama</th>
-			<th>Email</th>
-			<th>Jurusan</th>
-		</tr>
-		<?php $i = 1; ?>
-		<?php foreach ($mahasiswa as $row) : ?>
+	<table class="table">
+		<thead class="table-dark">
 			<tr>
-				<td><?= $i+$awalData ?></td>
-				<td>
-					<a href="ubah.php?id=<?= $row["id"];?>">Ubah</a> | 
-					<a href="hapus.php?id=<?= $row["id"];?>" onclick="return confirm('Yakin');">Hapus</a>
-				</td>
-				<td>
-					<img src="img/<?= $row["gambar"];?>" width="50">
-				</td>
-				<td><?= $row["nim"];?></td>
-				<td><?= $row["nama"];?></td>
-				<td><?= $row["email"];?></td>
-				<td><?= $row["jurusan"];?></td>
+				<th>No. </th>
+				<th>Nama</th>
+				<th>Username</th>
 			</tr>
-		<?php $i++; ?>
-		<?php endforeach; ?>
+		</thead>
+		<tbody>
+			<!-- Inisialisasi variabel $i dengan nilai 1, kemudian melakukan looping dengan foreach untuk setiap data user pada array $user. -->
+			<?php $i = 1; ?>
+			<!-- Untuk setiap data user, dibuat sebuah baris tabel (<tr>) yang berisi nomor urut ($i ditambah $awalData), nama user, dan username. -->
+			<?php foreach ($user as $row) : ?>
+				<tr>
+					<!-- Kemudian variabel $i ditambah 1 untuk menambah nomor urut pada baris selanjutnya. -->
+					<td><?= $i + $awalData ?></td>
+					<td><?= $row["nm_user"]; ?></td>
+					<td><?= $row["username"]; ?></td>
+				</tr>
+				<?php $i++; ?>
+			<?php endforeach; ?>
+		</tbody>
 	</table>
 </body>
+
 </html>

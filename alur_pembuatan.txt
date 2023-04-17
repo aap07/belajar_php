@@ -9,3 +9,8 @@
 9. Membuat sebuah dashboard sementara untuk melakukan test, dengan nama file index
 10. Jika sudah berhasil maka lanjutkan untuk membuat cookie dan membuat session pada file login ( login.php line 7-29 )
 11. Merubah tampilan dashboard menggunakan html/css, atau menggunakan framework ( bootstrap, tailwind, dll )
+12. Mengimport file functions.php pada file login dan memulai sesi untuk penggunaan variabel global $_SESSION ( login.php line 2-5 )
+13. Lakukan pengecekan pada $_SESSION ( index.php line 6-10 )
+14. Tampilkan data user dan gunakan halaman ( index.php line 11-23 )
+15. Tampilkan tabel untuk menampung data user ( index.php line 70-92 )
+16. Kita buat pagination atau halaman untuk tabelnya ( index.php line 49 -69 )
