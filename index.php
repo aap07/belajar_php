@@ -37,7 +37,7 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 <body>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link active" aria-current="page" href="#">User</a>
+			<a class="nav-link active" aria-current="page" href="index.php">User</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="#">Produk</a>

@@ -14,3 +14,4 @@
 14. Tampilkan data user dan gunakan halaman ( index.php line 11-23 )
 15. Tampilkan tabel untuk menampung data user ( index.php line 70-92 )
 16. Kita buat pagination atau halaman untuk tabelnya ( index.php line 49 -69 )
+17. Buat file logout php untuk menghapus seesion dan cookie
