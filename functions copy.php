@@ -129,19 +129,15 @@ function cari($keyword)
 	$query = "SELECT * FROM mahasiswa WHERE nama LIKE '%$keyword%' OR nim LIKE '%$keyword%' OR jurusan LIKE '%$keyword%'";
 	return query($query);
 }
-//fungsi untuk meregistrasi user baru
 function registrasi($data)
 {
 	global $conn;
-	//mengambil username dan menghapus karakter slash
 	$username = strtolower(stripslashes($data["username"]));
-	//mengambil nama dan menghapus karakter slash
-	$name = strtolower(stripslashes($data["name"]));
-	//mengambil password dan mencegah karakter yang tidak diinginkan seperti tanda petik tunggal, dll
 	$password = mysqli_real_escape_string($conn, $data["password"]);
+	$password2 = mysqli_real_escape_string($conn, $data["password2"]);
 
-	//cek apakah username sudah digunakan sebelumnya
-	$result = mysqli_query($conn, "SELECT username FROM tbl_user WHERE username = '$username'");
+	//cek user name
+	$result = mysqli_query($conn, "SELECT username FROM user WHERE username = '$username'");
 	if (mysqli_fetch_assoc($result)) {
 		echo "
 			<script>
@@ -150,10 +146,19 @@ function registrasi($data)
 		";
 		return false;
 	}
-	//enkripsi password sebelum disimpan di database
+
+	//cek kobfirmasi password
+	if ($password !== $password2) {
+		echo "
+			<script>
+				alert('Konfirmasi Password Salah');
+			</script>
+		";
+		return false;
+	}
+	//enkripsi password
 	$password = password_hash($password, PASSWORD_DEFAULT);
-	//tambahkan user baru ke dalam database
-	mysqli_query($conn, "INSERT INTO tbl_user VALUES('','$username','$name','$password')");
-	//mengembalikan jumlah baris yang terpengaruh oleh query sebelumnya
+	//tambahkan user baru
+	mysqli_query($conn, "INSERT INTO user VALUES('','$username','$password')");
 	return mysqli_affected_rows($conn);
 }

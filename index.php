@@ -22,6 +22,7 @@ $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
 $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 ?>
 
+<!DOCTYPE html>
 <head>
 	<title>Home</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -46,6 +47,9 @@ $user = query("SELECT * FROM tbl_user LIMIT $awalData, $jumlahDataPerHalaman");
 			<a class="nav-link" href="#">Transaksi</a>
 		</li>
 	</ul>
+	<br>
+	<a class="btn btn-outline-primary" href="tambah.php">Tambah Data</a>
+	<a class="btn btn-outline-danger" href="logout.php">Logout</a>
 	<br>
 	<br>
 	<!-- Jika halaman aktif lebih besar dari 1 maka akan menampilkan tombol untuk ke halaman sebelumnya -->
